@@ -8,7 +8,9 @@ class Product < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }
-  belongs_to :user
+
+  belongs_to :use
+  has_many :comments, dependent: :destroy
 
   def owned_by?(owner)
     user == owner
