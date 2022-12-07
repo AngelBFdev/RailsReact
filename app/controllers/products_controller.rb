@@ -23,6 +23,11 @@ class ProductsController < ApplicationController
 
   private
 
+  def require_owner
+    unless @product.owned_by?(current_user)
+    end
+  end
+
   def find_product
     begin
       @product = Product.find(params[:id])

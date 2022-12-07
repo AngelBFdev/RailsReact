@@ -9,4 +9,8 @@ class User < ApplicationRecord
 
   has_many :products, dependent: :destroy
   has_secure_password
+
+  def owned_by?(owner)
+    user == owner
+  end
 end
