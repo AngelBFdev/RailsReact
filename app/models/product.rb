@@ -9,4 +9,8 @@ class Product < ApplicationRecord
     greater_than_or_equal_to: 0
   }
   belongs_to :user
+
+  def owned_by?(owner)
+    user == owner
+  end
 end
