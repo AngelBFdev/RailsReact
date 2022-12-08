@@ -10,6 +10,21 @@ import "channels"
 
 import "bootstrap"
 
+import React from 'react'
+import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
+
+import App from '../containers/App'
+
+document.addEventListener('DOMContentLoaded', () => {
+  const root = document.getElementById('root')
+
+  ReactDOM.render(
+    <App />,
+    root
+  )
+})
+
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
