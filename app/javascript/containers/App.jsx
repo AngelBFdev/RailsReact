@@ -7,7 +7,6 @@ import Footer from '../components/shared/Footer'
 
 const App = () => (
   <>
-    <div>App Component</div>
     <Header />
     <Jumbotron />
     <ProductList />

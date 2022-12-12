@@ -7,12 +7,10 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
 import App from '../containers/App'
+import { createRoot } from 'react-dom/client';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const root = document.getElementById('root')
-
-  ReactDOM.render(
-    <App />,
-    root
-  )
+  const container = document.getElementById('root');
+  const root = createRoot(container);
+  root.render(<App />);
 })
