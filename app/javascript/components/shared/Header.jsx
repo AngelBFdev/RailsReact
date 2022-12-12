@@ -10,7 +10,7 @@ const Header = () => (
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav ms-auto">
         <li className="nav-item">
-          <a className="nav-link" href="index.html">Home <span className="sr-only">(current)</span></a>
+          <a className="nav-link" href="index.html">Home </a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="new-item.html">New Product</a>
