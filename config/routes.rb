@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'products#index'
   namespace :api do
     namespace :v1 do
       resources :products do
@@ -11,5 +12,5 @@ Rails.application.routes.draw do
       delete '/signout', to: 'sessions#destroy', as: 'session'
     end
   end
-  root 'products#index'
+  get '*path', to: 'products#index'
 end
