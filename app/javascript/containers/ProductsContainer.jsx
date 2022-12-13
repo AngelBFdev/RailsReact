@@ -28,9 +28,9 @@ class ProductList extends React.Component {
   }
 
   render () {
-    const products = ['Product1', 'Product2', 'Product3']
+    const { products } = this.state
     const productList = products.map(
-      product => <Product key={product}/>
+      product => <Product key={product.id} product={product}/>
     )
 
     return(
