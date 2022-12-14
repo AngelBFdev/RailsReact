@@ -1,8 +1,24 @@
+import axios from 'axios'
 import React from 'react'
 
 class ProductDetail extends React.Component {
   constructor(props){
     super(props)
+
+    this.state = {
+      product: {}
+    }
+  }
+
+  componentDidMount(){
+    const id = this.props.match.params.id
+
+    axios
+      .get(`/api/v1/products/${id}.json`)
+      .then(response => {
+        console.log(response.date.product)
+      })
+      .catch(error => console.log(error))
   }
 
   render() {
