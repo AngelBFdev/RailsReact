@@ -5,19 +5,18 @@ import Product from '../components/products/Product'
 import Jumbotron from '../components/products/Jumbotron'
 
 class ProductList extends React.Component {
-  constructor(props){
-    super(props)
 
-    this.state = {
-      products: []
-    }
+
+  state = {
+    products: []
   }
 
-  componentDidMount(){
+
+  componentDidMount = () =>{
     this.loadProductsFromServer()
   }
 
-  loadProductsFromServer() {
+  loadProductsFromServer = () => {
     axios
       .get('/api/v1/products.json')
       .then(response => {
