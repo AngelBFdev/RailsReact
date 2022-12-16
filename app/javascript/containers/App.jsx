@@ -15,7 +15,6 @@ class App extends Component {
         <Routes>
           <Route exact path='/' element={<ProductList/>}/>
           <Route path='/product/:id' element={<ProductDetail/>}/>
-          <Route path='/newProduct' element={<NewProductForm/>}/>
         </Routes>
         <Footer />
       </BrowserRouter>

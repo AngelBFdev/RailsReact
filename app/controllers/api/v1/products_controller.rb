@@ -10,6 +10,11 @@ class Api::V1::ProductsController < ApplicationController
 
 
   def create
+    @product = Product.new(product_params)
+    @product.user_id = 1
+    unless @product.save
+      render json: @product.errors.full_messages, status: :unprocessable_entity
+    end
   end
 
 

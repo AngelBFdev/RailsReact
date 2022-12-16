@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types'
 
 class NewProductForm extends Component {
   state = {
@@ -11,11 +12,28 @@ class NewProductForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
+
+    const { name, description, price, quantity } = this.state
+
+    const newProduct = {
+      name,
+      description,
+      price,
+      quantity
+    }
+    this.props.onSubmit(newProduct)
+    this.setState({
+      name: '',
+      description: '',
+      quantity: '',
+      price: ''
+    })
   }
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
+
   render(){
     const buttonText = "Create Product"
     const title = "Add New Product"
@@ -57,6 +75,22 @@ class NewProductForm extends Component {
                         id="price"
                         className="form-control"
                         placeholder="Item price"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group row">
+                    <label htmlFor="quantity" className="col-md-3 col-form-label">
+                      Quantity
+                    </label>
+                    <div className="col-md-9">
+                      <input type="number"
+                        name="quantity"
+                        value={this.state.quantity}
+                        onChange={this.handleChange}
+                        id="quantity"
+                        className="form-control"
+                        placeholder="Item quantity"
                       />
                     </div>
                   </div>
@@ -104,6 +138,10 @@ class NewProductForm extends Component {
       </div>
     )
   }
+}
+
+NewProductForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired
 }
 
 export default NewProductForm
