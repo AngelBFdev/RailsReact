@@ -127,9 +127,15 @@ class NewProductForm extends Component {
                         onChange={this.handleChange}
                         onBlur={this.handleBlur}
                         id="price"
-                        className="form-control"
+                        className={inputClasses("price",this.state)}
                         placeholder="Item price"
                       />
+                      {
+                        this.state.errors.price ?
+                        <div className="invalid-feedback">
+                          {this.state.errors.price}
+                        </div> : null
+                      }
                     </div>
                   </div>
 
@@ -148,9 +154,15 @@ class NewProductForm extends Component {
                         onChange={this.handleChange}
                         onBlur={this.handleBlur}
                         id="quantity"
-                        className="form-control"
+                        className={inputClasses("quantity",this.state)}
                         placeholder="Item quantity"
                       />
+                      {
+                        this.state.errors.quantity ?
+                        <div className="invalid-feedback">
+                          {this.state.errors.quantity}
+                        </div> : null
+                      }
                     </div>
                   </div>
 
@@ -168,10 +180,16 @@ class NewProductForm extends Component {
                         onChange={this.handleChange}
                         onBlur={this.handleBlur}
                         id="description"
-                        className="form-control"
+                        className={inputClasses("description",this.state)}
                         placeholder="Item description here"
                         rows="5"
                       ></textarea>
+                      {
+                        this.state.errors.description ?
+                        <div className="invalid-feedback">
+                          {this.state.errors.description}
+                        </div> : null
+                      }
                     </div>
                   </div>
 
