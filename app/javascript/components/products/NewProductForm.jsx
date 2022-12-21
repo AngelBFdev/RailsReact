@@ -33,7 +33,38 @@ class NewProductForm extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+    this.clearErrors(name, value);
+  };
+
+  clearErrors = (name, value) => {
+    let errors = { ...this.state.errors };
+
+    switch (name) {
+      case "name":
+        if (value.length > 0) {
+          delete errors["name"];
+        }
+        break;
+      case "description":
+        if (value.length > 0) {
+          delete errors["description"];
+        }
+        break;
+      case "price":
+        if (parseFloat(value) > 0.0 || value.match(/^\d{1,}(\.\d{0,2})?$/)) {
+          delete errors["price"];
+        }
+        break;
+      case "quantity":
+        if (parseInt(value, 10) > 0 || value.match(/^\d{1,}$/)) {
+          delete errors["quantity"];
+        }
+        break;
+      default:
+    }
+    this.setState({ errors });
   };
 
   checkErrors = (state, fieldName) => {
@@ -70,12 +101,12 @@ class NewProductForm extends Component {
     return error;
   };
 
-  handleBlur = (event) =>{
-    const {name} = event.target
-    const fieldError = this.checkErrors(this.state, name)
-    const errors = Object.assign({}, this.state.errors, fieldError)
-    this.setState({errors})
-  }
+  handleBlur = (event) => {
+    const { name } = event.target;
+    const fieldError = this.checkErrors(this.state, name);
+    const errors = Object.assign({}, this.state.errors, fieldError);
+    this.setState({ errors });
+  };
   render() {
     const buttonText = "Create Product";
     const title = "Add New Product";
@@ -102,16 +133,15 @@ class NewProductForm extends Component {
                         onChange={this.handleChange}
                         onBlur={this.handleBlur}
                         id="name"
-                        className={inputClasses("name",this.state)}
+                        className={inputClasses("name", this.state)}
                         placeholder="Item name"
                         autoFocus={true}
                       />
-                      {
-                        this.state.errors.name ?
+                      {this.state.errors.name ? (
                         <div className="invalid-feedback">
                           {this.state.errors.name}
-                        </div> : null
-                      }
+                        </div>
+                      ) : null}
                     </div>
                   </div>
 
@@ -127,15 +157,14 @@ class NewProductForm extends Component {
                         onChange={this.handleChange}
                         onBlur={this.handleBlur}
                         id="price"
-                        className={inputClasses("price",this.state)}
+                        className={inputClasses("price", this.state)}
                         placeholder="Item price"
                       />
-                      {
-                        this.state.errors.price ?
+                      {this.state.errors.price ? (
                         <div className="invalid-feedback">
                           {this.state.errors.price}
-                        </div> : null
-                      }
+                        </div>
+                      ) : null}
                     </div>
                   </div>
 
@@ -154,15 +183,14 @@ class NewProductForm extends Component {
                         onChange={this.handleChange}
                         onBlur={this.handleBlur}
                         id="quantity"
-                        className={inputClasses("quantity",this.state)}
+                        className={inputClasses("quantity", this.state)}
                         placeholder="Item quantity"
                       />
-                      {
-                        this.state.errors.quantity ?
+                      {this.state.errors.quantity ? (
                         <div className="invalid-feedback">
                           {this.state.errors.quantity}
-                        </div> : null
-                      }
+                        </div>
+                      ) : null}
                     </div>
                   </div>
 
@@ -180,16 +208,15 @@ class NewProductForm extends Component {
                         onChange={this.handleChange}
                         onBlur={this.handleBlur}
                         id="description"
-                        className={inputClasses("description",this.state)}
+                        className={inputClasses("description", this.state)}
                         placeholder="Item description here"
                         rows="5"
                       ></textarea>
-                      {
-                        this.state.errors.description ?
+                      {this.state.errors.description ? (
                         <div className="invalid-feedback">
                           {this.state.errors.description}
-                        </div> : null
-                      }
+                        </div>
+                      ) : null}
                     </div>
                   </div>
 
