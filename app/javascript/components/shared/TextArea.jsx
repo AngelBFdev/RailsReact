@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { inputClasses } from "../../shared/helpers";
 
 const TextArea = (props) => (
-  <div className="form-group row">
-    <label htmlFor={props.name} className="col-md-3 col-form-label">
+  <div className="form-group row mt-3">
+    <label htmlFor={props.name} className="col-md-3 col-form-label">
       {props.title}
     </label>
     <div className="col-md-9">
