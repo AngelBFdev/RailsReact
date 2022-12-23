@@ -6,6 +6,7 @@ import ErrorMessages from "../shared/ErrorMessages";
 import Input from "../shared/Input";
 import Button from "../shared/Button";
 import TextArea from "../shared/TextArea";
+import ProductForm from "./ProductForm";
 
 class NewProductForm extends Component {
   state = {
@@ -145,68 +146,13 @@ class NewProductForm extends Component {
                 {title}
               </h1>
 
-              <div className="form-body-style px-5 pt-4">
-                <form className="form-horizontal" onSubmit={this.handleSubmit}>
-                  <Input
-                    title="Name"
-                    type="text"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    placeholder="Item name"
-                    autoFocus={true}
-                    state={this.state}
-                  />
-                  <Input
-                    title="Price"
-                    type="text"
-                    name="price"
-                    value={this.state.price}
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    placeholder="Item price"
-                    autoFocus={false}
-                    state={this.state}
-                  />
-                  <TextArea
-                    title="Description"
-                    name="description"
-                    value={this.state.description}
-                    rows="5"
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    placeholder="Item description"
-                    autoFocus={false}
-                    state={this.state}
-                  />
-                  <Input
-                    title="Quantity"
-                    type="number"
-                    name="quantity"
-                    value={this.state.quantity}
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    placeholder="Item quantity"
-                    autoFocus={false}
-                    state={this.state}
-                  />
-                  <Input
-                    title="Image"
-                    type="file"
-                    name="image"
-                    value={this.state.image}
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    placeholder="Item image"
-                    autoFocus={false}
-                    state={this.state}
-                  />
-                  <Button>
-                    {buttonText}
-                  </Button>
-                </form>
-              </div>
+              <ProductForm
+                onSubmit={this.handleSubmit}
+                onChange={this.handleChange}
+                onBlur={this.handleBlur}
+                state={this.state}
+                buttonText={buttonText}
+              />
             </div>
           </div>
         </div>
