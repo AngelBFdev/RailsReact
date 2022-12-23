@@ -26,12 +26,12 @@ class ProductList extends React.Component {
       .catch((error) => console.log(error.response.data));
   };
 
-  shouldComponentUpdate = (nextProps, nextState) => {
-    if (this.state.serverErrors.length !== nextState.serverErrors.length) {
-      return true;
-    }
-    return false;
-  };
+  // shouldComponentUpdate = (nextProps, nextState) => {
+  //   if (this.state.serverErrors.length !== nextState.serverErrors.length) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   handleProductSubmit = (data) => {
     const newProduct = {
@@ -59,6 +59,12 @@ class ProductList extends React.Component {
       });
   };
 
+  handleButtonClick = () => {
+    this.setState({
+      isFormVisible: !this.state.isFormVisible
+    })
+  }
+
   resetSaved = () => {
     this.setState({
       saved: false,
@@ -75,12 +81,25 @@ class ProductList extends React.Component {
     return (
       <>
         <Jumbotron />
-        <NewProductForm
-          onSubmit={this.handleProductSubmit}
-          serverErrors={this.state.serverErrors}
-          saved={this.state.saved}
-          onResetSaved={this.resetSaved}
-        />
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 mb-2">
+              <button
+                onClick={this.handleButtonClick}
+                className="btn btn-outline-purple btn-sm"
+              >+ New Product</button>
+            </div>
+          </div>
+        </div>
+        {this.state.isFormVisible &&
+          <NewProductForm
+            onSubmit={this.handleProductSubmit}
+            serverErrors={this.state.serverErrors}
+            saved={this.state.saved}
+            onResetSaved={this.resetSaved}
+          />
+        }
+
         <div className="container">
           <div className="row">
             <div className="col-md-12 mb-2">
