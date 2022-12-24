@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Navigate } from "react-router-dom";
 import Input from "../components/shared/Input";
 import Button from "../components/shared/Button";
 import SignupForm from "../components/shared/Form";
@@ -12,6 +12,7 @@ class Signup extends Component {
     email: "",
     password: "",
     errors: {},
+    toHomePage: false,
   };
 
   handleChange = (event) => {
@@ -32,19 +33,30 @@ class Signup extends Component {
       },
     };
     this.handleSignup(newUser);
+    this.setState({
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      toHomePage: true,
+    });
   };
 
   handleSignup = (user) => {
     axios
       .post("/api/v1/users.json", user)
       .then((response) => {
-        this.props.onFetchCurrentUser()
+        this.props.onFetchCurrentUser();
       })
       .catch((error) => console.log(error));
   };
 
   handleBlur = (event) => {};
   render() {
+    if (this.state.toHomePage) {
+      return <Navigate to="/" />;
+    }
+
     return (
       <div className="container mt-4">
         <div className="row">
