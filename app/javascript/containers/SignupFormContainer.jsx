@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Input from "../components/shared/Input";
 import Button from "../components/shared/Button";
 import SignupForm from "../components/shared/Form";
+import axios from "axios";
 
 class Signup extends Component {
   state = {
@@ -61,7 +62,7 @@ class Signup extends Component {
                 onBlur={this.handleBlur}
                 placeholder="Your first name"
                 autoFocus={true}
-                state="this.state"
+                state={this.state}
               />
               <Input
                 title="Last Name"
@@ -72,7 +73,7 @@ class Signup extends Component {
                 onBlur={this.handleBlur}
                 placeholder="Your last name"
                 autoFocus={false}
-                state="this.state"
+                state={this.state}
               />
               <Input
                 title="Email"
@@ -83,7 +84,7 @@ class Signup extends Component {
                 onBlur={this.handleBlur}
                 placeholder="Your email address"
                 autoFocus={false}
-                state="this.state"
+                state={this.state}
               />
               <Input
                 title="Password"
@@ -94,7 +95,7 @@ class Signup extends Component {
                 onBlur={this.handleBlur}
                 placeholder="Your password"
                 autoFocus={false}
-                state="this.state"
+                state={this.state}
               />
               <Button>Sign up</Button>
             </SignupForm>

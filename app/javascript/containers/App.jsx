@@ -6,6 +6,7 @@ import ProductList from "./ProductsContainer";
 import Footer from "../components/shared/Footer";
 import ProductDetail from "./ProductDetailContainer";
 import Signup from "./SignupFormContainer";
+import axios from "axios";
 
 class App extends Component {
   state = {
