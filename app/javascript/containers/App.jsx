@@ -13,6 +13,10 @@ class App extends Component {
     currentUser: null,
   };
 
+  componentDidMount = () => {
+    this.fetchCurrentUser();
+  };
+
   fetchCurrentUser = () => {
     axios
       .get("/api/v1/users/get_current_user.json")
@@ -30,11 +34,19 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Header />
+        <Header currentUser={this.state.currentUser} />
         <Routes>
           <Route exact path="/" element={<ProductList />} />
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/register" element={<Signup onFetchCurrentUser={this.fetchCurrentUser}/>} />
+          <Route
+            path="/register"
+            element={
+              <Signup
+                onFetchCurrentUser={this.fetchCurrentUser}
+                currentUser={this.state.currentUser}
+              />
+            }
+          />
         </Routes>
         <Footer />
       </BrowserRouter>

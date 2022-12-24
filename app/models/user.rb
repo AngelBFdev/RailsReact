@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :products, dependent: :destroy
   has_secure_password
 
-  def full_name
+  def fullname
     "#{first_name} #{last_name}"
   end
 end

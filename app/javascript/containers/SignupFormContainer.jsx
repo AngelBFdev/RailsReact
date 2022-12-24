@@ -4,6 +4,9 @@ import Input from "../components/shared/Input";
 import Button from "../components/shared/Button";
 import SignupForm from "../components/shared/Form";
 import axios from "axios";
+import { EMAIL_REGEX, verifyAndSetFieldErrors } from "../shared/helpers";
+import ErrorMessages from "../components/shared/ErrorMessages";
+import PropTypes from 'prop-types'
 
 class Signup extends Component {
   state = {
@@ -13,53 +16,156 @@ class Signup extends Component {
     password: "",
     errors: {},
     toHomePage: false,
+    serverErrors: [],
+    saved: false,
+  };
+
+  componentDidUpdate = () => {
+    if (this.state.saved) {
+      this.setState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        toHomePage: true,
+      });
+      this.resetSaved();
+    }
+  };
+
+  componentWillUnmount = () => {
+    if (this.state.serverErrors.length > 0) {
+      this.resetSaved();
+    }
   };
 
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+    this.clearErrors(name, value);
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { firstname, lastname, email, password } = this.state;
+    const fieldNames = ["firstname", "lastname", "email", "password"];
+    verifyAndSetFieldErrors(this, fieldNames);
 
-    const newUser = {
-      user: {
-        first_name: firstname,
-        last_name: lastname,
-        email,
-        password,
-      },
-    };
-    this.handleSignup(newUser);
-    this.setState({
-      firstname: "",
-      lastname: "",
-      email: "",
-      password: "",
-      toHomePage: true,
-    });
+    if (Object.keys(this.state.errors) === 0) {
+      const { firstname, lastname, email, password } = this.state;
+      const newUser = {
+        user: {
+          first_name: firstname,
+          last_name: lastname,
+          email,
+          password,
+        },
+      };
+      this.handleSignup(newUser);
+    }
   };
 
   handleSignup = (user) => {
     axios
       .post("/api/v1/users.json", user)
       .then((response) => {
-        this.props.onFetchCurrentUser();
+        this.setState(
+          {
+            serverErrors: [],
+            saved: true,
+          },
+          () => {
+            this.props.onFetchCurrentUser();
+          }
+        );
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        this.setState({
+          serverErrors: [...error.response.data],
+        });
+      });
   };
 
-  handleBlur = (event) => {};
+  handleBlur = (event) => {
+    const { name } = event.target;
+    const fieldError = this.checkErrors(this.state, name);
+    const errors = Object.assign({}, this.state.errors, fieldError);
+    this.setState({ errors });
+  };
+
+  checkErrors = (state, fieldName) => {
+    const error = {};
+    switch (fieldName) {
+      case "firstname":
+        if (!state.firstname) {
+          error.firstname = "Please provide a firstname";
+        }
+        break;
+      case "lastname":
+        if (!state.lastname) {
+          error.lastname = "Please provide a lastname";
+        }
+        break;
+      case "password":
+        if (!state.password) {
+          error.password = "Please provide a password";
+        }
+        break;
+      case "email":
+        if (!state.email || !EMAIL_REGEX.test(state.email)) {
+          error.email = "Please provide a valid email address";
+        }
+        break;
+      default:
+    }
+    return error;
+  };
+
+  clearErrors = (name, value) => {
+    let errors = { ...this.state.errors };
+    switch (name) {
+      case "firstname":
+        if (value.length > 0) {
+          delete errors["firstname"];
+        }
+        break;
+      case "lastname":
+        if (value.length > 0) {
+          delete errors["lastname"];
+        }
+        break;
+      case "email":
+        if (value.length > 0 && EMAIL_REGEX.test(this.state.email)) {
+          delete errors["email"];
+        }
+        break;
+      case "password":
+        if (value.length > 0) {
+          delete errors["password"];
+        }
+        break;
+      default:
+    }
+    this.setState({ errors });
+  };
+
+  resetSaved = () => {
+    this.setState({
+      saved: false,
+      serverErrors: [],
+    });
+  };
+
   render() {
-    if (this.state.toHomePage) {
+    if (this.state.toHomePage || this.props.currentUser) {
       return <Navigate to="/" />;
     }
 
     return (
       <div className="container mt-4">
         <div className="row">
+          {this.state.serverErrors.length > 0 && (
+            <ErrorMessages errors={this.state.serverErrors} />
+          )}
           <div className="col-md-8 offset-md-2">
             <h1 className="text-center form-header-style mt-5 pt-2 pb-3">
               Sign Up
@@ -117,5 +223,10 @@ class Signup extends Component {
     );
   }
 }
+
+Signup.propTypes = {
+  currentUser: PropTypes.object,
+  onFetchCurrentUser: PropTypes.func.isRequired,
+};
 
 export default Signup;
