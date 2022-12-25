@@ -64,7 +64,15 @@ class App extends Component {
               />
             }
           />
-          <Route path="/login"  element={<Signin />} />
+          <Route
+            path="/login"
+            element={
+              <Signin
+                onFetchCurrentUser={this.fetchCurrentUser}
+                currentUser={this.state.currentUser}
+              />
+            }
+          />
         </Routes>
         <Footer />
       </BrowserRouter>

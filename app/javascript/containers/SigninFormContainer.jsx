@@ -104,7 +104,16 @@ class Signin extends Component {
     axios
       .post("/api/v1/signin.json", user)
       .then((response) => {
-        this.setState({ toHomePage: true });
+        this.setState(
+          {
+            toHomePage: true,
+            serverErrors: [],
+            saved: true,
+          },
+          () => {
+            this.props.onFetchCurrentUser();
+          }
+        );
       })
       .catch((error) => {
         const msg = error.response.data.error;
@@ -170,5 +179,10 @@ class Signin extends Component {
     );
   }
 }
+
+Signin.propTypes = {
+  onFetchCurrentUser: PropTypes.func.isRequired,
+  currentUser: PropTypes.object,
+};
 
 export default Signin;
