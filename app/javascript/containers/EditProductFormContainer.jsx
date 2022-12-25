@@ -57,6 +57,32 @@ class EditProductForm extends Component {
     });
   };
 
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+    this.clearErrors(name, value);
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    const fieldNames = ["name", "description", "price", "quantity"];
+    verifyAndSetFieldErrors(this, fieldNames);
+    const editedProduct = {
+      id: this.state.id,
+      name: this.state.name,
+      description: this.state.description,
+      price: parseFloat(this.state.price),
+      quantity: parseInt(this.state.quantity, 10),
+    };
+    this.handleProductUpdate(editedProduct);
+  };
+
+  handleProductUpdate = () => {};
+  checkErrors = (state, fieldName) => {};
+  clearErrors = (name, value) => {};
+  handleBlur = (event) => {};
+
   render() {
     const buttonText = "Update Product";
     const title = "Editing Product";
