@@ -31,12 +31,17 @@ class App extends Component {
     this.setState({ currentUser });
   };
 
-  handleSignout = (event) => {
+  handleSignout = (event, location, history) => {
     event.preventDefault();
     axios
       .delete("/api/v1/signout.json")
       .then((response) => {
         this.setState({ currentUser: null });
+        console.log(location)
+        console.log(history)
+        if (location.pathname !== "/") {
+          history('/')
+        }
       })
       .catch((error) => console.log(error.response));
   };

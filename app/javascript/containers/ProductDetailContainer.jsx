@@ -53,6 +53,7 @@ class ProductDetail extends React.Component {
     )
   }
 }
+
 export default (props) => (
   <ProductDetail {...props} params={useParams()} />
 );
