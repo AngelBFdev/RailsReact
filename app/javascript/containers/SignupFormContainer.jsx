@@ -50,7 +50,7 @@ class Signup extends Component {
     const fieldNames = ["firstname", "lastname", "email", "password"];
     verifyAndSetFieldErrors(this, fieldNames);
 
-    if (Object.keys(this.state.errors) === 0) {
+    if (Object.keys(this.state.errors).length === 0) {
       const { firstname, lastname, email, password } = this.state;
       const newUser = {
         user: {
