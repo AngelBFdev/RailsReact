@@ -1,7 +1,9 @@
 import axios from "axios";
-import React from "react";
-import PropTypes from 'prop-types'
+import React, {Fragment} from "react";
+import PropTypes from "prop-types";
+import { Link, Routes, Route } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import EditProductForm from "./EditProductFormContainer";
 
 class ProductDetail extends React.Component {
   constructor(props) {
@@ -9,6 +11,7 @@ class ProductDetail extends React.Component {
 
     this.state = {
       product: {},
+      editing: false,
     };
   }
 
@@ -23,6 +26,14 @@ class ProductDetail extends React.Component {
       .catch((error) => console.log(error));
   }
 
+  editingProduct = (value) => {
+    if (value === undefined) {
+      this.setState({ editing: true });
+    } else if (value === "edited") {
+      this.setState({ editing: false });
+    }
+  };
+
   isOwner = (user, product) => {
     if (Object.keys(product).length > 0) {
       return user && user.id === product.user_id;
@@ -31,10 +42,9 @@ class ProductDetail extends React.Component {
   };
 
   render() {
-    const {id} =this.props.params
+    const { id } = this.props.params;
     const { product } = this.state;
-    const {currentUser} = this.props
-
+    const { currentUser } = this.props;
 
     return (
       <div className="container">
@@ -60,26 +70,26 @@ class ProductDetail extends React.Component {
             <div className="mb-4">{product.description}</div>
 
             {this.isOwner(currentUser, product) ? (
-              <>
-                <div className="float-right btn-edit-del">
+              <Fragment>
+                <div className="float-end btn-edit-del">
                   <a href="#" className="btn btn-outline-danger btn-lg">
                     Delete
                   </a>
                 </div>
                 <div className="btn-edit-del">
                   <Link
-                    to={`/product/${id}/edit`}
+                    to={`/products/${id}/edit`}
                     className="btn btn-outline-purple btn-lg"
                   >
                     Edit
                   </Link>
-                  <a href="#" className="btn btn-outline-purple btn-lg">
-                    Edit
-                  </a>
                 </div>
-              </>
+              </Fragment>
             ) : null}
           </div>
+          <Routes>
+          <Route path="/edit" element={<EditProductForm onEdit={this.editingProduct} />} />
+          </Routes>
         </div>
       </div>
     );

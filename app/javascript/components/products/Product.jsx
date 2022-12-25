@@ -11,7 +11,7 @@ const Product = ({ product }) => (
           <span className="badge badge-pill badge-purple float-end">
             {product.price}
           </span>
-          <Link to={`product/${product.id}`}>{product.name}</Link>
+          <Link to={`products/${product.id}`}>{product.name}</Link>
         </h5>
         <p className="card-text">
           {product.description}

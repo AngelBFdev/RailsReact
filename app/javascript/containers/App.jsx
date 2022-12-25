@@ -8,6 +8,7 @@ import ProductDetail from "./ProductDetailContainer";
 import Signup from "./SignupFormContainer";
 import axios from "axios";
 import Signin from "./SigninFormContainer";
+import EditProductFormContainer from "./EditProductFormContainer";
 
 class App extends Component {
   state = {
@@ -55,7 +56,7 @@ class App extends Component {
         <Routes>
           <Route exact path="/" element={<ProductList />} />
           <Route
-            path="/product/:id"
+            path="/products/:id/*"
             element={
               <ProductDetail
                 //{...props}
@@ -63,6 +64,7 @@ class App extends Component {
               />
             }
           />
+
           <Route
             path="/register"
             element={
