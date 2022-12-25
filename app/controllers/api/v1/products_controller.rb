@@ -1,4 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
+  before_action :require_signin, except: [:index, :show]
   before_action :find_product, only: [:show]
 
   def index
@@ -11,7 +12,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def create
     @product = Product.new(product_params)
-    @product.user_id = 1
+    @product.user_id = current_user
     unless @product.save
       render json: @product.errors.full_messages, status: :unprocessable_entity
     end
@@ -35,7 +36,9 @@ class Api::V1::ProductsController < ApplicationController
     begin
       @product = Product.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      redirect_to root_path
+      render json: {
+        error: "The product you are looking for is sold out!"
+        },status: 404
     end
 
   end

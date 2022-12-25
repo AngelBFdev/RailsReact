@@ -54,7 +54,15 @@ class App extends Component {
         />
         <Routes>
           <Route exact path="/" element={<ProductList />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route
+            path="/product/:id"
+            element={
+              <ProductDetail
+                //{...props}
+                currentUser={this.state.currentUser}
+              />
+            }
+          />
           <Route
             path="/register"
             element={
