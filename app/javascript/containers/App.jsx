@@ -7,6 +7,7 @@ import Footer from "../components/shared/Footer";
 import ProductDetail from "./ProductDetailContainer";
 import Signup from "./SignupFormContainer";
 import axios from "axios";
+import Signin from "./SigninFormContainer";
 
 class App extends Component {
   state = {
@@ -37,10 +38,8 @@ class App extends Component {
       .delete("/api/v1/signout.json")
       .then((response) => {
         this.setState({ currentUser: null });
-        console.log(location)
-        console.log(history)
         if (location.pathname !== "/") {
-          history('/')
+          history("/");
         }
       })
       .catch((error) => console.log(error.response));
@@ -65,6 +64,7 @@ class App extends Component {
               />
             }
           />
+          <Route path="/login"  element={<Signin />} />
         </Routes>
         <Footer />
       </BrowserRouter>

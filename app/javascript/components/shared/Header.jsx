@@ -27,7 +27,7 @@ const Header = ({ currentUser, onSignout, location, history }) => (
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/">
+          <Link className="nav-link" to="/login">
             Sign In
           </Link>
         </li>
