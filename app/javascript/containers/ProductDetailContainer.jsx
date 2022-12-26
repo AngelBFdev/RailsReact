@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link, Routes, Route } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import EditProductForm from "./EditProductFormContainer";
 
 class ProductDetail extends React.Component {
@@ -34,7 +34,9 @@ class ProductDetail extends React.Component {
       .then((response) => {
         this.setState({ product: response.data.product });
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>
+          this.props.history('/')
+        );
   };
 
   setUpdated = (value) => {
@@ -124,4 +126,4 @@ class ProductDetail extends React.Component {
 ProductDetail.propTypes = {
   currentUser: PropTypes.object,
 };
-export default (props) => <ProductDetail {...props} params={useParams()} />;
+export default (props) => <ProductDetail {...props} params={useParams()} history={useNavigate()}/>;
