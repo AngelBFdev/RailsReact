@@ -84,7 +84,7 @@ class ProductDetail extends React.Component {
             </div>
             <div className="mb-4">{product.description}</div>
 
-            {this.isOwner(currentUser, product) ? (
+            {this.isOwner(currentUser, product) && !this.state.editing ? (
               <Fragment>
                 <div className="float-end btn-edit-del">
                   <a href="#" className="btn btn-outline-danger btn-lg">
@@ -103,6 +103,7 @@ class ProductDetail extends React.Component {
             ) : null}
           </div>
           <Routes>
+              {this.isOwner(currentUser, product) ?
             <Route
               path="/edit"
               element={
@@ -111,7 +112,8 @@ class ProductDetail extends React.Component {
                   onUpdate={this.setUpdated}
                 />
               }
-            />
+            /> : null
+              }
           </Routes>
         </div>
       </div>
