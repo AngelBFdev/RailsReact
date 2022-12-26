@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import Comment from "./Comment";
+import CommentForm from "./CommentForm";
 
 class CommentList extends Component {
   render() {
@@ -11,11 +12,10 @@ class CommentList extends Component {
     if (!comments || comments.length === 0) {
       return (
         <div className="container">
+          <CommentForm />
           <div className="row">
             <div className="col-md-10 offset-md-1 mt-4">
-              <h2 className="comment-header text-center">
-                No Comments Yet!
-              </h2>
+              <h2 className="comment-header text-center">No Comments Yet!</h2>
             </div>
           </div>
         </div>
@@ -28,6 +28,12 @@ class CommentList extends Component {
 
     return (
       <div className="container">
+        <CommentForm
+          onCommentSubmit={this.props.onCommentSubmit}
+          serverErrors={this.props.serverErrors}
+          saved={this.props.saved}
+          onResetSaved={this.props.onResetSaved}
+        />
         <div className="row">
           <div className="col-md-10 offset-md-1 mt-4">
             <h2 className="comment-header">
@@ -40,5 +46,13 @@ class CommentList extends Component {
     );
   }
 }
+
+CommentList.propTypes = {
+  comments: PropTypes.array,
+  onCommentSubmit: PropTypes.func.isRequired,
+  serverErrors: PropTypes.array.isRequired,
+  saved: PropTypes.bool.isRequired,
+  onResetSaved: PropTypes.func,
+};
 
 export default CommentList;

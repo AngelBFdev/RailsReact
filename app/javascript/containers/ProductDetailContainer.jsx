@@ -15,6 +15,8 @@ class ProductDetail extends React.Component {
       editing: false,
       updated: false,
       comments: [],
+      saved: false,
+      serverErrors: [],
     };
   }
 
@@ -73,6 +75,17 @@ class ProductDetail extends React.Component {
     this.handleProductDelete(this.props.params.id);
   };
 
+  handleCommentSubmit = (data) => {
+    const {id} = this.props.params;
+    axios
+      .post(`/api/v1/products/${id}/comments.json`, data)
+      .then((response) => {
+        const comments = [response.data.comment, ...this.state.comments];
+        this.setState({ comments });
+      })
+      .catch((error) => this.setState({ serverErrors: error.response.data }));
+  };
+
   handleProductDelete = (id) => {
     axios
       .delete(`/api/v1/products/${id}.json`)
@@ -80,6 +93,13 @@ class ProductDetail extends React.Component {
         this.props.history("/");
       })
       .catch((error) => console.log(error));
+  };
+
+  resetSaved = () => {
+    this.setState({
+      saved: false,
+      serverErrors: [],
+    });
   };
 
   render() {
@@ -148,7 +168,13 @@ class ProductDetail extends React.Component {
         </div>
         <hr />
         {!this.state.editing ? (
-          <CommentList comments={this.state.comments} />
+          <CommentList
+            comments={this.state.comments}
+            onCommentSubmit={this.handleCommentSubmit}
+            serverErrors={this.state.serverErrors}
+            saved={this.state.saved}
+            onResetSaved={this.resetSaved}
+          />
         ) : null}
       </div>
     );

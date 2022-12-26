@@ -9,6 +9,11 @@ class Api::V1::CommentsController < ApplicationController
   def create
     @comment = @product.comments.build(comment_params)
     @comment.user = current_user
+
+    unless @comment.save
+      render json: @comment.errors.full_messages,
+        status: :unprocessable_entity
+    end
   end
 
   private
