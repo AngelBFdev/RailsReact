@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Link, Routes, Route } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import EditProductForm from "./EditProductFormContainer";
+import CommentList from "../components/comments/CommentList";
 
 class ProductDetail extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class ProductDetail extends React.Component {
       product: {},
       editing: false,
       updated: false,
+      comments: [],
     };
   }
 
@@ -134,6 +136,8 @@ class ProductDetail extends React.Component {
             ) : null}
           </Routes>
         </div>
+        <hr />
+        <CommentList comments={this.state.comments} />
       </div>
     );
   }
