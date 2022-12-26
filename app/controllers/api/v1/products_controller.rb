@@ -1,6 +1,6 @@
 class Api::V1::ProductsController < ApplicationController
   before_action :require_signin, except: [:index, :show]
-  before_action :find_product, only: [:show, :update]
+  before_action :find_product, only: [:show, :update, :destroy]
   before_action :require_owner, only: [:update, :destroy]
 
   def index
@@ -29,6 +29,7 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def destroy
+    @product.destroy
   end
 
   private

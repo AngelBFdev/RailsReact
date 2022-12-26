@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link, Routes, Route } from "react-router-dom";
-import { useNavigate,useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EditProductForm from "./EditProductFormContainer";
 
 class ProductDetail extends React.Component {
@@ -27,16 +27,14 @@ class ProductDetail extends React.Component {
   };
 
   getProduct = () => {
-    const {id} = this.props.params;
+    const { id } = this.props.params;
 
     axios
       .get(`/api/v1/products/${id}.json`)
       .then((response) => {
         this.setState({ product: response.data.product });
       })
-      .catch((error) =>
-          this.props.history('/')
-        );
+      .catch((error) => this.props.history("/"));
   };
 
   setUpdated = (value) => {
@@ -56,6 +54,20 @@ class ProductDetail extends React.Component {
       return user && user.id === product.user_id;
     }
     return false;
+  };
+
+  handleDelete = (event) => {
+    event.preventDefault();
+    this.handleProductDelete(this.props.params.id);
+  };
+
+  handleProductDelete = (id) => {
+    axios
+      .delete(`/api/v1/products/${id}.json`)
+      .then((response) => {
+        this.props.history("/");
+      })
+      .catch((error) => console.log(error));
   };
 
   render() {
@@ -89,7 +101,11 @@ class ProductDetail extends React.Component {
             {this.isOwner(currentUser, product) && !this.state.editing ? (
               <Fragment>
                 <div className="float-end btn-edit-del">
-                  <a href="#" className="btn btn-outline-danger btn-lg">
+                  <a
+                    href="#"
+                    onClick={this.handleDelete}
+                    className="btn btn-outline-danger btn-lg"
+                  >
                     Delete
                   </a>
                 </div>
@@ -105,17 +121,17 @@ class ProductDetail extends React.Component {
             ) : null}
           </div>
           <Routes>
-              {this.isOwner(currentUser, product) ?
-            <Route
-              path="/edit"
-              element={
-                <EditProductForm
-                  onEdit={this.editingProduct}
-                  onUpdate={this.setUpdated}
-                />
-              }
-            /> : null
-              }
+            {this.isOwner(currentUser, product) ? (
+              <Route
+                path="/edit"
+                element={
+                  <EditProductForm
+                    onEdit={this.editingProduct}
+                    onUpdate={this.setUpdated}
+                  />
+                }
+              />
+            ) : null}
           </Routes>
         </div>
       </div>
@@ -126,4 +142,6 @@ class ProductDetail extends React.Component {
 ProductDetail.propTypes = {
   currentUser: PropTypes.object,
 };
-export default (props) => <ProductDetail {...props} params={useParams()} history={useNavigate()}/>;
+export default (props) => (
+  <ProductDetail {...props} params={useParams()} history={useNavigate()} />
+);
