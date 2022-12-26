@@ -1,18 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 const Comment = ({ comment }) => (
   <div className="col-md-10 offset-md-1 comment-block mt-4">
-    <div className="comment-body mb-2 mt-3">
-      {comment.body}
-    </div>
+    <div className="comment-body mb-2 mt-3">{comment.body}</div>
     <small>
       <em>
-        Created
+        Created&nbsp;
         <span>
-          {comment.created_at}
-        </span>
-        ago by:
+          {
+            moment(comment.created_at)
+              .startOf("minute")
+              .fromNow()
+          }
+        </span> by:&nbsp;
       </em>
       {comment.user.fullname}
     </small>
