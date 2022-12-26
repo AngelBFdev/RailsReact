@@ -19,24 +19,34 @@ class ProductDetail extends React.Component {
   }
 
   componentDidMount() {
-    this.getProduct();
+    this.getProductAndComments();
   }
 
   componentDidUpdate = () => {
     if (this.state.editing && this.state.updated) {
-      this.getProduct();
+      this.getProductAndComments();
     }
   };
 
-  getProduct = () => {
+  getProductAndComments = () => {
     const { id } = this.props.params;
 
-    axios
-      .get(`/api/v1/products/${id}.json`)
-      .then((response) => {
-        this.setState({ product: response.data.product });
-      })
-      .catch((error) => this.props.history("/"));
+    if (id) {
+      axios
+        .all([
+          axios.get(`/api/v1/products/${id}.json`),
+          axios.get(`/api/v1/products/${id}/comments.json`),
+        ])
+        .then(
+          axios.spread((productResponse, commentsResponse) => {
+            this.setState({
+              product: productResponse.data.product,
+              comments: commentsResponse.data.comments,
+            });
+          })
+        )
+        .catch((error) => this.props.history("/"));
+    }
   };
 
   setUpdated = (value) => {
@@ -137,7 +147,9 @@ class ProductDetail extends React.Component {
           </Routes>
         </div>
         <hr />
-        <CommentList comments={this.state.comments} />
+        {!this.state.editing ? (
+          <CommentList comments={this.state.comments} />
+        ) : null}
       </div>
     );
   }
@@ -146,6 +158,7 @@ class ProductDetail extends React.Component {
 ProductDetail.propTypes = {
   currentUser: PropTypes.object,
 };
+
 export default (props) => (
   <ProductDetail {...props} params={useParams()} history={useNavigate()} />
 );
