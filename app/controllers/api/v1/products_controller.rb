@@ -1,6 +1,6 @@
 class Api::V1::ProductsController < ApplicationController
   before_action :require_signin, except: [:index, :show]
-  before_action :find_product, only: [:show]
+  before_action :find_product, only: [:show, :update]
 
   def index
     @products = Product.all
@@ -14,12 +14,17 @@ class Api::V1::ProductsController < ApplicationController
     @product = Product.new(product_params)
     @product.user_id = current_user
     unless @product.save
-      render json: @product.errors.full_messages, status: :unprocessable_entity
+      render json: @product.errors.full_messages,
+        status: :unprocessable_entity
     end
   end
 
 
   def update
+    unless @product.update(product_params)
+      render json: @product.errors.full_messages,
+        status: :unprocessable_entity
+    end
   end
 
   def destroy

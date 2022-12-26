@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link, Routes, Route } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -12,11 +12,22 @@ class ProductDetail extends React.Component {
     this.state = {
       product: {},
       editing: false,
+      updated: false,
     };
   }
 
   componentDidMount() {
-    const { id } = this.props.params;
+    this.getProduct();
+  }
+
+  componentDidUpdate = () => {
+    if (this.state.editing && this.state.updated) {
+      this.getProduct();
+    }
+  };
+
+  getProduct = () => {
+    const {id} = this.props.params;
 
     axios
       .get(`/api/v1/products/${id}.json`)
@@ -24,7 +35,11 @@ class ProductDetail extends React.Component {
         this.setState({ product: response.data.product });
       })
       .catch((error) => console.log(error));
-  }
+  };
+
+  setUpdated = (value) => {
+    this.setState({ updated: value });
+  };
 
   editingProduct = (value) => {
     if (value === undefined) {
@@ -88,7 +103,15 @@ class ProductDetail extends React.Component {
             ) : null}
           </div>
           <Routes>
-          <Route path="/edit" element={<EditProductForm onEdit={this.editingProduct} />} />
+            <Route
+              path="/edit"
+              element={
+                <EditProductForm
+                  onEdit={this.editingProduct}
+                  onUpdate={this.setUpdated}
+                />
+              }
+            />
           </Routes>
         </div>
       </div>
